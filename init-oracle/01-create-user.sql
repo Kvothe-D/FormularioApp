@@ -1,6 +1,6 @@
 -- Este script se ejecuta automáticamente cuando Oracle se inicia por primera vez
 -- Conectar al PDB
-ALTER SESSION SET CONTAINER=FREEPDB1;
+ALTER SESSION SET CONTAINER=XEPDB1;
 
 -- Crear el usuario daniel si no existe 
 DECLARE

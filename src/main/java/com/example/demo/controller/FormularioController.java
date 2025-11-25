@@ -39,7 +39,7 @@ public class FormularioController {
                                    BindingResult bindingResult, 
                                    RedirectAttributes redirectAttributes) {
         
-        // Verificar si hay errores de validación
+        // Verificar si hay errores de validacion
         if (bindingResult.hasErrors()) {
             return "formulario"; 
         }
@@ -55,10 +55,10 @@ public class FormularioController {
             producerTemplate.sendBodyAndHeader(
                     "direct:sendEmail",
                     body,
-                    "To", respuesta.getEmail() // Se envía al correo del usuario
+                    "To", respuesta.getEmail() // Se envia al correo del usuario
             );
 
-            // Mensaje de éxito
+            // Mensaje de exito
             redirectAttributes.addFlashAttribute("mensaje", "Empleado registrado exitosamente!");
             return "redirect:/exito";
         }
@@ -80,7 +80,7 @@ public class FormularioController {
         }
         
         catch (Exception e) {
-            // Manejar otros errores de base de datos o envío de correo
+            // Manejar otros errores de base de datos o envio de correo
             redirectAttributes.addFlashAttribute("respuesta", respuesta);
             redirectAttributes.addFlashAttribute("error", "Error al guardar o enviar correo: " + e.getMessage());
             return "redirect:/formulario";

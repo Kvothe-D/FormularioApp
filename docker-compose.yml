@@ -1,25 +1,23 @@
-version: '3.8'
-
 services:
   # Base de datos Oracle
   oracle-db:
-    image: gvenzl/oracle-xe:23-slim
+    image: gvenzl/oracle-xe:21-slim
     container_name: formulario-oracle
+    platform: linux/amd64
     environment:
       - ORACLE_PASSWORD=daniel12
-      - ORACLE_DATABASE=FREEPDB1
     ports:
       - "1521:1521"
-      - "5500:5500"  
+      - "5500:5500"
     volumes:
       - oracle-data:/opt/oracle/oradata
       - ./init-oracle:/container-entrypoint-initdb.d
     healthcheck:
-      test: ["CMD-SHELL", "sqlplus -L sys/daniel12@FREEPDB1 as sysdba <<< 'SELECT 1 FROM DUAL;' || exit 1"]
+      test: ["CMD", "healthcheck.sh"]
       interval: 30s
       timeout: 10s
-      retries: 10
-      start_period: 120s
+      retries: 20
+      start_period: 300s
     networks:
       - formulario-network
     restart: unless-stopped
@@ -29,26 +27,23 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: formulario-app
+    container_name: FormularioApp
     ports:
       - "4000:4000"
     environment:
-      # Configuración de base de datos Oracle
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@//oracle-db:1521/FREEPDB1
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@//oracle-db:1521/XEPDB1
       - SPRING_DATASOURCE_USERNAME=daniel
       - SPRING_DATASOURCE_PASSWORD=daniel12
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=oracle.jdbc.OracleDriver
       
-      # Configuración JPA
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
       - SPRING_JPA_SHOW_SQL=true
       - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.OracleDialect
       
-      # Configuración del servidor
       - SERVER_PORT=4000
       - SPRING_APPLICATION_NAME=FormularioApp
-      
-      # Configuracion mia de Mailtrap
+
+      # Mailtrap
       - SPRING_MAIL_HOST=sandbox.smtp.mailtrap.io
       - SPRING_MAIL_PORT=587
       - SPRING_MAIL_USERNAME=5423e805366b32
@@ -56,15 +51,13 @@ services:
       - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
       - APP_MAIL_FROM=remitente@tudominio.com
     depends_on:
-      oracle-db:
-        condition: service_healthy
+      - oracle-db
     networks:
       - formulario-network
     restart: unless-stopped
 
 volumes:
   oracle-data:
-    driver: local
 
 networks:
   formulario-network:
