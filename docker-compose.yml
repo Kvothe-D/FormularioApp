@@ -48,7 +48,7 @@ services:
       - SERVER_PORT=4000
       - SPRING_APPLICATION_NAME=FormularioApp
       
-      # Configuración de Mailtrap
+      # Configuracion mia de Mailtrap
       - SPRING_MAIL_HOST=sandbox.smtp.mailtrap.io
       - SPRING_MAIL_PORT=587
       - SPRING_MAIL_USERNAME=5423e805366b32

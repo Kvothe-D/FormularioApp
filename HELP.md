@@ -1,28 +1,49 @@
-# Getting Started
+# Docker para FormularioApp
+Este proyecto está configurado para ejecutarse en Docker con Oracle Database incluido.
 
-### Reference Documentation
-For further reference, please consider the following sections:
+## Requisitos Previos
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/3.5.6/maven-plugin)
-* [Create an OCI image](https://docs.spring.io/spring-boot/3.5.6/maven-plugin/build-image.html)
-* [Spring Data JPA](https://docs.spring.io/spring-boot/3.5.6/reference/data/sql.html#data.sql.jpa-and-spring-data)
-* [Thymeleaf](https://docs.spring.io/spring-boot/3.5.6/reference/web/servlet.html#web.servlet.spring-mvc.template-engines)
-* [Spring Web](https://docs.spring.io/spring-boot/3.5.6/reference/web/servlet.html)
+- Docker Desktop instalado y ejecutándose
+- Docker Compose v3.8 o superior
+- Al menos 4GB de RAM disponible para Oracle
 
-### Guides
-The following guides illustrate how to use some features concretely:
+## Inicio Rápido
 
-* [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
-* [Handling Form Submission](https://spring.io/guides/gs/handling-form-submission/)
-* [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
-* [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
-* [Building REST services with Spring](https://spring.io/guides/tutorials/rest/)
+### 1. Construir y levantar los servicios
 
-### Maven Parent overrides
+```bash
+docker-compose up --build
+```
 
-Due to Maven's design, elements are inherited from the parent POM to the project POM.
-While most of the inheritance is fine, it also inherits unwanted elements like `<license>` and `<developers>` from the parent.
-To prevent this, the project POM contains empty overrides for these elements.
-If you manually switch to a different parent and actually want the inheritance, you need to remove those overrides.
+### 2. Detener los servicios
 
+```bash
+docker-compose down
+```
+
+## Acceder a Oracle desde la línea de comandos
+
+```bash
+docker exec -it formulario-oracle sqlplus daniel/daniel12@FREEPDB1
+```
+
+## Variables de Entorno
+
+Las variables de entorno están definidas en `docker-compose.yml`. Pueden modificarse según tus necesidades:
+
+- **Base de datos**: Cambiar `SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`
+- **Mailtrap**: Actualizar credenciales de `SPRING_MAIL_USERNAME` y `SPRING_MAIL_PASSWORD`
+- **Puerto**: Modificar `SERVER_PORT` y el mapeo de puertos en `docker-compose.yml`
+
+## Persistencia de Datos
+
+Los datos de Oracle se almacenan en un volumen Docker llamado `oracle-data`. Esto significa que los datos persisten incluso si detienes y eliminas los contenedores (a menos que uses `docker-compose down -v`).
+
+## Caso de que puerto 4000 ya está en uso
+
+Cambia el puerto en `docker-compose.yml`:
+
+```yaml
+ports:
+  - "4001:4000"  # Usa 4001 en lugar de 4000
+```
