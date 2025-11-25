@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+  <head >
+    <meta charset="UTF-8">
+    <title>FormularioApp</title>
+	<style>
+	      body {
+	        margin: 0;
+	        height: 100vh; /* ocupa toda la altura de la ventana */
+	        display: flex;
+	        justify-content: center;  /* centra horizontal */
+	        align-items: center;      /* centra vertical */
+	        flex-direction: column;   /* coloca el contenido en columna */
+	        
+			background: url("LinuxKiller.jpeg") no-repeat center center fixed; 
+			background-size: cover;
+			font-family: Arial, sans-serif;
+	      }
+
+	      form {
+	        background: rgba(255, 255, 255, .85);
+	        padding: 20px;
+	        border-radius: 10px;
+	        box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+	        width: 400px; /* siempre mide 400px de ancho */
+	      }
+
+			.encabezado {
+			  background: rgba(255, 255, 255, 0.85);
+			  padding: 1px 20px;
+			  border-radius: 10px;
+			  box-shadow: 0px 4px 10px rgba(0,0,0,0.5);
+			  margin-bottom: 15px;
+			  text-align: center;
+			}
+
+	      h2 {
+			color: blue;
+			margin-bottom: 10px;
+	      }
+
+	      label {
+	        font-weight: bold;
+			color: blue;
+	      }
+
+	      input, button {
+	        width: 95%;
+	        padding: 8px;
+	        margin-top: 5px;
+	        border-radius: 5px;
+	        border: 1px solid #ccc;
+	      }
+
+	      button {
+	        background: #007bff;
+	        color: white;
+	        border: none;
+	        cursor: pointer;
+	        margin-top: 15px;
+	      }
+
+	      button:hover {
+	        background: #0056b3;
+	      }
+
+	    </style>
+  </head>
+  <body>
+		<div class="encabezado">
+    		<h2>Registro de empleado</h2>
+   			<p><strong>Favor de llenar los siguientes campos</strong></p>
+		</div>
+		
+        <!-- Mensajes de error y éxito -->
+        <div th:if="${error}" style="background: #f8d7da; color: #721c24; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #f5c6cb;">
+          <span th:text="${error}"></span>
+      </div>
+      
+      <div th:if="${mensaje}" style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c3e6cb;">
+          <span th:text="${mensaje}"></span>
+      </div>
+      
+      <form th:action="@{/guardar}" th:object="${caja}" method="post">
+            <div>
+              <label for="employeeId">ID del empleado:</label><br>
+              <input type="text" id="employeeId" placeholder="Ej: 001" th:field="*{employeeId}" required>
+                <div th:if="${#fields.hasErrors('employeeId')}" style="color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                  <span th:errors="*{employeeId}"></span>
+                </div>
+            </div>
+
+            <br>
+
+            <div>
+              <label for="nombre">Nombre:</label><br>
+              <input type="text" id="nombre" placeholder="Ej: Pedro" th:field="*{firstName}" required>
+                <div th:if="${#fields.hasErrors('firstName')}" style="color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                  <span th:errors="*{firstName}"></span>
+                </div>
+            </div>
+
+            <br>
+
+            <div>
+              <label for="apellido">Apellido:</label><br>
+              <input type="text" id="apellido" placeholder="Ej: Martinez" th:field="*{lastName}" required>
+                <div th:if="${#fields.hasErrors('lastName')}" style="color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                  <span th:errors="*{lastName}"></span>
+                </div>
+            </div>
+
+            <br>
+            
+            <div>
+              <label for="email">Email:</label><br>
+              <input type="text" id="email" placeholder="Ej: PedroMartinez@gmail.com" th:field="*{email}" required>
+              <div th:if="${#fields.hasErrors('email')}" style="color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                  <span th:errors="*{email}"></span>
+                </div>
+            </div>
+
+            <br>
+
+            <div>
+              <label for="telefono">Telefono:</label><br>
+              <input type="text" id="telefono" placeholder="Ej: 6142080112" th:field="*{phoneNumber}" required>
+                <div th:if="${#fields.hasErrors('phoneNumber')}" style="color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                  <span th:errors="*{phoneNumber}"></span>
+                </div>
+            </div>
+
+            <br>
+
+            <div>
+              <label for="fecha_contratacion">Fecha de Contratacion:</label><br>
+              <input type="date" id="fecha_contratacion" th:field="*{hireDate}" required>
+                <div th:if="${#fields.hasErrors('hireDate')}" style="color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                  <span th:errors="*{hireDate}"></span>
+                </div>
+            </div>
+
+            <br>
+
+            <div>
+              <label for="salario">Salario:</label><br>
+              <input type="number" id="salario" placeholder="Ej: 25000" min="0" step="0.01" th:field="*{salary}" required>
+                <div th:if="${#fields.hasErrors('salary')}" style="color: #dc3545; font-size: 0.875rem; margin-top: 5px;">
+                  <span th:errors="*{salary}"></span>
+                </div>
+            </div>
+
+            <br>
+
+    		<button type="submit" style="display: block; width: 95%; margin: 20px auto; padding: 10px 0; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+    		    Registrar Empleado
+    		</button>
+      </form>
+
+      <br>
+      <a th:href="@{/empleados}" style="display: block; width: 400px; text-align: center; padding: 10px 0; background: #28a745; color: white; border-radius: 5px; text-decoration: none; box-shadow: 0px 4px 10px rgba(0,0,0,0.5);">
+        Ver empleados registrados
+      </a>
+	  <br>
+	  <!-- <footer><em><a style="color: white;" href="https://www.youtube.com/watch?v=G06Po3AnacQ" target="_blank">Haz click aqui para ver un video</a></em></footer> -->
+  </body>
+</html>    

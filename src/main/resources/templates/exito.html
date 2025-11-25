@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro Exitoso</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+
+            /* 🔹 Fondo: usa una imagen o un degradado */
+            background: url("LinuxKiller.jpeg") no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+
+        img {
+            max-width: 150px; /* tamaño de la imagen del centro */
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: green;
+            margin-bottom: 10px;
+        }
+
+        .mensaje {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border: 1px solid #c3e6cb;
+        }
+
+        .botones {
+            margin-top: 20px;
+        }
+
+        .botones a, .botones button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .botones a:hover, .botones button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Imagen en el centro -->
+        <img src="Exito.png" alt="Éxito">
+
+        <h1>¡Registro Exitoso!</h1>
+        <p>El empleado ha sido registrado correctamente en la base de datos.</p>
+   
+        <!-- Botones -->
+        <div class="botones">
+            <a href="/formulario">Registrar Otro Empleado</a>
+        </div>
+    </div>
+</body>
+</html>
