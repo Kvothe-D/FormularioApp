@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # Base de datos Oracle
+  oracle-db:
+    image: gvenzl/oracle-xe:23-slim
+    container_name: formulario-oracle
+    environment:
+      - ORACLE_PASSWORD=daniel12
+      - ORACLE_DATABASE=FREEPDB1
+    ports:
+      - "1521:1521"
+      - "5500:5500"  
+    volumes:
+      - oracle-data:/opt/oracle/oradata
+      - ./init-oracle:/container-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "sqlplus -L sys/daniel12@FREEPDB1 as sysdba <<< 'SELECT 1 FROM DUAL;' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    networks:
+      - formulario-network
+    restart: unless-stopped
+
+  # Aplicación Spring Boot
+  formulario-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: formulario-app
+    ports:
+      - "4000:4000"
+    environment:
+      # Configuración de base de datos Oracle
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@//oracle-db:1521/FREEPDB1
+      - SPRING_DATASOURCE_USERNAME=daniel
+      - SPRING_DATASOURCE_PASSWORD=daniel12
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=oracle.jdbc.OracleDriver
+      
+      # Configuración JPA
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.OracleDialect
+      
+      # Configuración del servidor
+      - SERVER_PORT=4000
+      - SPRING_APPLICATION_NAME=FormularioApp
+      
+      # Configuración de Mailtrap
+      - SPRING_MAIL_HOST=sandbox.smtp.mailtrap.io
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=5423e805366b32
+      - SPRING_MAIL_PASSWORD=dcef5c18bc9878
+      - SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH=true
+      - APP_MAIL_FROM=remitente@tudominio.com
+    depends_on:
+      oracle-db:
+        condition: service_healthy
+    networks:
+      - formulario-network
+    restart: unless-stopped
+
+volumes:
+  oracle-data:
+    driver: local
+
+networks:
+  formulario-network:
+    driver: bridge

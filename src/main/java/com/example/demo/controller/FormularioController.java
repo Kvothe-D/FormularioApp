@@ -104,8 +104,7 @@ public class FormularioController {
             @RequestParam("adminPassword") String adminPassword,
             RedirectAttributes redirectAttributes
     ) {
-        // Contraseña de administrador muy simple/hardcodeada.
-        // Puedes mover esto a application.properties más adelante si quieres.
+
         String adminPasswordReal = "1234";
 
         if (!adminPasswordReal.equals(adminPassword)) {

@@ -1,0 +1,16 @@
+# Archivos y directorios a ignorar en Docker
+target/
+.git/
+.gitignore
+.idea/
+*.iml
+.vscode/
+*.class
+*.log
+*.jar
+!target/FormularioApp-*.jar
+.mvn/wrapper/maven-wrapper.jar
+HELP.md
+README.md
+.DS_Store
+node_modules/
