@@ -68,7 +68,6 @@
         </dependency>
 
         <!-- Oracle JDBC -->
-		<!-- Oracle JDBC (para Java 21) -->
 		<dependency>
 		    <groupId>com.oracle.database.jdbc</groupId>
 		    <artifactId>ojdbc11</artifactId>
